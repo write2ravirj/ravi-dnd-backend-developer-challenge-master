@@ -5,29 +5,32 @@ let characters = new Map();
 
 const characterService = {
   initializeCharacterData: () => {
-    try {
-      const brivData = JSON.parse(fs.readFileSync(path.join(__dirname, '../../briv.json'), 'utf8'));
-      characters.set('briv.json', {
-        ...brivData,
-        currentHp: brivData.hitPoints,
-        temporaryHp: 0
+    // Load character data from JSON files in the data directory
+      fs.readdirSync(path.resolve('data'), "utf8").forEach((file) => {
+        try { 
+          const brivData = (JSON.parse(fs.readFileSync(path.join(path.resolve('data'), file), "utf8")));
+          const charactername = path.parse(file.toLowerCase()).name 
+          characters.set(charactername, {
+            ...brivData,
+            currentHp: brivData.hitPoints,
+            temporaryHp: 0
+          });
+        }catch (e) {
+          console.error(`Failed to load data from ${file}.\n${e}`); // Would log to a logging service in production
+        }
       });
-    } catch (error) {
-      console.error('Error initializing character data:', error);
-      throw new Error('Failed to initialize character data');
-    }
   },
 
-  getCharacter: (filename) => {
-    const character = characters.get(filename.toLowerCase());
+  getCharacter: (charactername) => {
+    const character = characters.get(charactername.toLowerCase());
     if (!character) {
       throw new Error('Character not found');
     }
     return character;
   },
 
-  dealDamage: (filename, damageAmount, damageType) => {
-    const character = characterService.getCharacter(filename);
+  dealDamage: (charactername, damageAmount, damageType) => {
+    const character = characterService.getCharacter(charactername);
     
     // Check for immunity
     const immunity = character.defenses.find(
@@ -67,8 +70,11 @@ const characterService = {
     };
   },
 
-  heal: (filename, amount) => {
-    const character = characterService.getCharacter(filename);
+  heal: (charactername, amount) => {
+    if (amount < 0) {
+      throw "Can not add negative temporary hit points.";
+    }
+    const character = characterService.getCharacter(charactername);
     const maxHp = character.hitPoints;
     
     // Cannot heal above max HP
@@ -80,8 +86,8 @@ const characterService = {
     };
   },
 
-  addTemporaryHp: (filename, amount) => {
-    const character = characterService.getCharacter(filename);
+  addTemporaryHp: (charactername, amount) => {
+    const character = characterService.getCharacter(charactername);
     
     // Temporary HP is not cumulative, take the higher value
     character.temporaryHp = Math.max(character.temporaryHp, amount);

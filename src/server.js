@@ -14,10 +14,9 @@ app.use(bodyParser.json());
 characterService.initializeCharacterData();
 
 // Routes
-app.get('/api/character/:filename', characterController.getCharacter);
-app.post('/api/character/:filename/damage', characterController.dealDamage);
-app.post('/api/character/:filename/heal', characterController.heal);
-app.post('/api/character/:filename/temp-hp', characterController.addTemporaryHp);
+app.post('/api/character/:name/damage', characterController.dealDamage);
+app.post('/api/character/:name/heal', characterController.heal);
+app.post('/api/character/:name/temp-hp', characterController.addTemporaryHp);
 
 app.listen(port, () => {
   console.log(`D&D Character HP Management API running on port ${port}`);

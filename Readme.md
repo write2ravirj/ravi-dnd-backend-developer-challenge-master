@@ -34,12 +34,6 @@ The server will be running on `http://localhost:3000`.
 
 ### API Endpoints
 
-- **Get Character Data**
-  ```http
-  GET /api/character/:filename
-  ```
-  Retrieves the character data from the specified file.
-
 - **Deal Damage**
   ```http
   POST /api/character/:filename/damage
@@ -60,14 +54,9 @@ The server will be running on `http://localhost:3000`.
 
 ### Example Usage
 
-To get character data:
-```bash
-curl http://localhost:3000/api/character/character1.json
-```
-
 To deal damage to a character:
 ```bash
-curl -X POST http://localhost:3000/api/character/briv.json/damage \
+curl -X POST http://localhost:3000/api/character/briv/damage \
   -H "Content-Type: application/json" \
   -d '{"damageAmount": 14, "damageType": "piercing"}'
   
@@ -75,10 +64,10 @@ curl -X POST http://localhost:3000/api/character/briv.json/damage \
 
 To heal a character:
 ```bash
-curl -X POST http://localhost:3000/api/character/briv.json/heal -H "Content-Type: application/json" -d '{"heal": 5}'
+curl -X POST http://localhost:3000/api/character/briv/heal -H "Content-Type: application/json" -d '{"heal": 5}'
 ```
 
 To add temporary HP to a character:
 ```bash
-curl -X POST http://localhost:3000/api/character/character1.json/temp-hp -H "Content-Type: application/json" -d '{"amount": 8}'
+curl -X POST http://localhost:3000/api/character/briv/temp-hp -H "Content-Type: application/json" -d '{"amount": 8}'
 ```
