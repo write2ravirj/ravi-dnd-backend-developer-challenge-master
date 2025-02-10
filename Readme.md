@@ -1,3 +1,4 @@
+# DnD Beyond Backend Developer Challenge
 # D&D Character HP Management API
 
 This project is a Node.js-based API for managing Dungeons & Dragons character hit points (HP). It allows you to get character data, deal damage, heal, and add temporary HP.
